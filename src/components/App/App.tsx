@@ -16,12 +16,14 @@ const App = () => {
     queryKey: ["notes", search, currentPage],
   });
 
-  console.log(data);
+  const handleSearch = (search: string) => {
+    setSearch(search);
+  };
 
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox></SearchBox>
+        <SearchBox search={search} onSearch={handleSearch}></SearchBox>
         {isSuccess && data.totalPages > 1 && (
           <Pagination
             totalPages={data.totalPages}
