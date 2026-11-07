@@ -2,14 +2,16 @@ import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
 import SearchBox from "../SearchBox/SearchBox";
 import css from "./App.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { getNotes } from "../../services/noteService";
+import { deleteNote, getNotes } from "../../services/noteService";
+import type { Note } from "../../types/note";
 
 const App = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const queryClient = useQueryClient();
 
   const { data, error, isLoading, isSuccess, isError } = useQuery({
     queryFn: () => getNotes(search, currentPage),
@@ -18,6 +20,17 @@ const App = () => {
 
   const handleSearch = (search: string) => {
     setSearch(search);
+  };
+
+  const deleteNoteM = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+    },
+  });
+
+  const handleDelete = (noteId: Note["id"]) => {
+    deleteNoteM.mutate(noteId);
   };
 
   return (
@@ -35,7 +48,7 @@ const App = () => {
       </header>
       {isLoading && <p className={css.loading}>Loading...</p>}
       {isError && <p className={css.error}>{error.message}</p>}
-      {isSuccess && <NoteList notes={data.notes} />}
+      {isSuccess && <NoteList notes={data.notes} onDelete={handleDelete} />}
     </div>
   );
 };
