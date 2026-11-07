@@ -15,10 +15,14 @@ const API = axios.create({
   },
 });
 
-export const getNotes = async (search: string): Promise<NotesResponce> => {
+export const getNotes = async (
+  search: string,
+  page: number,
+): Promise<NotesResponce> => {
   const { data } = await API.get<NotesResponce>("/notes", {
     params: {
       search,
+      page,
     },
   });
   return data;

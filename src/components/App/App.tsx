@@ -9,10 +9,11 @@ import { getNotes } from "../../services/noteService";
 
 const App = () => {
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data, error, isLoading, isSuccess, isError } = useQuery({
-    queryFn: () => getNotes(search),
-    queryKey: ["notes", search],
+    queryFn: () => getNotes(search, currentPage),
+    queryKey: ["notes", search, currentPage],
   });
 
   console.log(data);
@@ -21,7 +22,13 @@ const App = () => {
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox></SearchBox>
-        <Pagination></Pagination>
+        {isSuccess && data.totalPages > 1 && (
+          <Pagination
+            totalPages={data.totalPages}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        )}
         <button className={css.button}>Create note +</button>
       </header>
       {isLoading && <p className={css.loading}>Loading...</p>}
