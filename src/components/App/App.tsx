@@ -25,6 +25,7 @@ const App = () => {
   });
 
   const handleSearch = (search: string) => {
+    setCurrentPage(1);
     setSearch(search);
   };
 
