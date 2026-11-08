@@ -1,12 +1,12 @@
 import type { Note } from "../../types/note";
 import css from "./NoteList.module.css";
 
-interface NotesListProps {
+interface NoteListProps {
   notes: Note[];
   onDelete: (noteId: Note["id"]) => void;
 }
 
-const NoteList = ({ notes, onDelete }: NotesListProps) => {
+const NoteList = ({ notes, onDelete }: NoteListProps) => {
   return (
     <ul className={css.list}>
       {notes.map((note) => (

@@ -2,7 +2,12 @@ import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
 import SearchBox from "../SearchBox/SearchBox";
 import css from "./App.module.css";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
 import { Button } from "antd";
@@ -22,6 +27,7 @@ const App = () => {
   const { data, error, isLoading, isSuccess, isError } = useQuery({
     queryFn: () => getNotes(search, currentPage),
     queryKey: [QUERY_KEY_NOTES, search, currentPage],
+    placeholderData: keepPreviousData,
   });
 
   const handleSearch = (search: string) => {
@@ -68,7 +74,7 @@ const App = () => {
       {isSuccess && <NoteList notes={data.notes} onDelete={handleDelete} />}
 
       {isModalOpen && (
-        <Modal>
+        <Modal onClose={handleCloseModal}>
           <NoteForm onCloseModal={handleCloseModal} />
         </Modal>
       )}

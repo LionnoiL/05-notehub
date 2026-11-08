@@ -1,8 +1,8 @@
 import axios from "axios";
 const apiKey = import.meta.env.VITE_NOTEHUB_TOKEN;
-import type { Note, CreateNote, UpdateNote } from "../types/note";
+import type { Note, CreateNote } from "../types/note";
 
-interface NotesResponce {
+interface NotesResponse {
   notes: Note[];
   totalPages: number;
 }
@@ -18,8 +18,8 @@ const API = axios.create({
 export const getNotes = async (
   search: string,
   page: number,
-): Promise<NotesResponce> => {
-  const { data } = await API.get<NotesResponce>("/notes", {
+): Promise<NotesResponse> => {
+  const { data } = await API.get<NotesResponse>("/notes", {
     params: {
       search,
       page,
@@ -34,17 +34,7 @@ export const createNote = async (payload: CreateNote): Promise<Note> => {
   return data;
 };
 
-export const deleteNote = async (noteId: Note["id"]): Promise<void> => {
-  await API.delete(`/notes/${noteId}`);
-};
-
-export const updateNote = async ({
-  noteId,
-  payload,
-}: {
-  noteId: Note["id"];
-  payload: UpdateNote;
-}): Promise<Note> => {
-  const { data } = await API.put<Note>(`/notes/${noteId}`, payload);
+export const deleteNote = async (noteId: Note["id"]): Promise<Note> => {
+  const { data } = await API.delete<Note>(`/notes/${noteId}`);
   return data;
 };

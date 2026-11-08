@@ -17,12 +17,6 @@ export interface CreateNote {
   tag: TagsType;
 }
 
-export interface UpdateNote {
-  title: string;
-  content: string;
-  tag: TagsType;
-}
-
 export interface CreateNoteFormValues {
   title: string;
   content: string;
