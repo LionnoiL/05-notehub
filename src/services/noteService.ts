@@ -23,6 +23,7 @@ export const getNotes = async (
     params: {
       search,
       page,
+      perPage: 12,
     },
   });
   return data;

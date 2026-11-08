@@ -14,7 +14,7 @@ const SearchBox = ({ search, onSearch }: SearchBoxProps) => {
   return (
     <input
       className={css.input}
-      type="text"
+      type="search"
       placeholder="Search notes"
       defaultValue={search}
       onChange={(event) => debounced(event.target.value)}

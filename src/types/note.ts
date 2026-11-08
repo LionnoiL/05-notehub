@@ -1,4 +1,6 @@
-type TagsType = "Work" | "Personal" | "Meeting" | "Shopping" | "Todo";
+import { TAGS } from "../constants";
+
+export type TagsType = (typeof TAGS)[number];
 
 export interface Note {
   id: string;
@@ -16,6 +18,12 @@ export interface CreateNote {
 }
 
 export interface UpdateNote {
+  title: string;
+  content: string;
+  tag: TagsType;
+}
+
+export interface CreateNoteFormValues {
   title: string;
   content: string;
   tag: TagsType;
